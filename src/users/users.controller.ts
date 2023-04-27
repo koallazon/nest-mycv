@@ -9,6 +9,7 @@ import {
   Query,
   NotFoundException,
   Session,
+  //UseInterceptors, // scoped interceptor
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user-dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
@@ -16,8 +17,14 @@ import { UsersService } from './users.service';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
 import { AuthService } from './auth.service';
+import { CurrentUser } from './decorators/current-user.decorator';
+// scoped interceptor
+//import { CurrentUserInterceptor } from './ interceptors/current-user.interceptor';
+import { User } from './user.entity';
 
 @Controller('auth')
+@Serialize(UserDto)
+// @UseInterceptors(CurrentUserInterceptor) // scoped interceptor
 // @Serialize(UserDto) 컨트롤러 전부 적용
 export class UsersController {
   constructor(
@@ -25,9 +32,14 @@ export class UsersController {
     private authService: AuthService,
   ) {}
 
+  // @Get('/whoami')
+  // whoAmI(@Session() session: any) {
+  //   return this.usersService.findOne(session.userId);
+  // }
+
   @Get('/whoami')
-  whoAmI(@Session() session: any) {
-    return this.usersService.findOne(session.userId);
+  whoAmI(@CurrentUser() user: User) {
+    return user;
   }
 
   @Post('/signup')
