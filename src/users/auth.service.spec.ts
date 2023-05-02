@@ -40,23 +40,33 @@ describe('AuthServiec', () => {
     expect(salt).toBeDefined();
     expect(hash).toBeDefined();
   });
-  it('throws an error if user signs up with email that is in use', async (done) => {
+  it('throws an error if user signs up with email that is in use', async () => {
     fakeUsersService.find = () =>
       Promise.resolve([{ id: 1, email: 'a', password: '1' } as User]);
-    try {
-      await expect(
-        service.signin('asdflkj@asdlfkj.com', 'passdflkj'),
-      ).rejects.toThrow(NotFoundException);
-    } catch (err) {
-      done();
-    }
+
+    await expect(
+      service.signup('asdflkj@asdlfkj.com', 'passdflkj'),
+    ).rejects.toThrow(BadRequestException);
   });
 
-  it('사용할 수 없는 이메일로 로그인을 했을 때 에러를 처리해야한다.', async (done) => {
-    try {
-      await service.signin('asdfasdf@nbasdlfk.com', '512dsfasfasedf');
-    } catch (ere) {
-      done();
-    }
+  it('사용할 수 없는 이메일로 로그인을 했을 때 에러를 처리해야한다.', async () => {
+    await expect(
+      service.signin('asdflkj@asdlfkj.com', 'passdflkj'),
+    ).rejects.toThrow(NotFoundException);
+  });
+
+  it('유효한 비밀번호가 아니라면 에러가 나야한다.', async () => {
+    fakeUsersService.find = () =>
+      Promise.resolve([{ email: 'asdf@asdf.com', password: 'asdf' } as User]);
+    await expect(
+      service.signin('lkjklsdfj@nasdf.com', 'password'),
+    ).rejects.toThrow(BadRequestException);
+  });
+
+  it('비밀번호가 정확하면 사용자 정보를 반환해야한다.', async () => {
+    fakeUsersService.find = () =>
+      Promise.resolve([{ email: 'asdf@asdf.com', password: 'asdf' } as User]);
+    const user = await service.signin('asdf@asdf.com', 'mypassword');
+    expect(user).toBeDefined;
   });
 });
