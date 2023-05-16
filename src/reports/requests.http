@@ -1,4 +1,4 @@
-POSt http://localhost:3000/reports
+POST http://localhost:3000/reports
 Content-Type: application/json
 
 {
@@ -8,6 +8,5 @@ Content-Type: application/json
     "mileage": 12345,
     "lng": 0,
     "lat": 0,
-    "price": 500000,
+    "price": 500000
 }
-```
