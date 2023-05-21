@@ -2,13 +2,13 @@ POST http://localhost:3000/reports
 Content-Type: application/json
 
 {
-    "make": "Toyota",
-    "model": "Camry",
-    "year": 2012,
-    "mileage": 12345,
-    "lng": 0,
-    "lat": 0,
-    "price": 500000
+    "make": "ford",
+    "model": "mustang",
+    "year": 1982,
+    "mileage": 50000,
+    "lng": 45,
+    "lat": 45,
+    "price": 20000
 }
 
 ### Approve an existing report
@@ -19,3 +19,6 @@ Content-Type: application/json
 {
     "approved": false
 }
+
+### Get an estimate for an existing vehcile
+GET http://localhost:3000/reports?make=ford&model=mustang&year=1981&mileage=2000&lng=45&lat=45
