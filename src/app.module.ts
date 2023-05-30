@@ -7,7 +7,8 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { ReportsModule } from './reports/reports.module';
 const cookieSession = require('cookie-session');
-const dbConfig = require('../ormconfig.js');
+// const dbConfig = require('../ormconfig.js');
+import dbConfig from '../ormconfig.js';
 
 @Module({
   imports: [
@@ -15,7 +16,6 @@ const dbConfig = require('../ormconfig.js');
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
-    TypeOrmModule.forRoot(dbConfig),
     UsersModule,
     ReportsModule,
   ],
