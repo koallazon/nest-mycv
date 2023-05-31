@@ -1,6 +1,4 @@
-const { DataSource } = require('typeorm');
-
-const dbConfig = {
+var dbConfig = {
   synchronize: false,
   migrations: ['migrations/*.js'],
   cli: {
@@ -21,16 +19,27 @@ switch (process.env.NODE_ENV) {
       type: 'sqlite',
       database: 'test.sqlite',
       entities: ['**/*.entity.ts'],
+      migrationsRun: true,
     });
     break;
   case 'production':
+    Object.assign(dbConfig, {
+      type: 'postgres',
+      database: process.env.DATABASE_URL,
+      migrationsRun: true,
+      entities: ['**/*.entity{.js,.ts}'],
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    });
     break;
   default:
-    throw new Error('unknown environment');
+    throw new Error('Unknown Environment');
 }
 
-const dataSource = new DataSource({
-  ...dbConfig,
-});
+// Old typeorm command in package.json
+// "comments": {
+//  "typeorm": "cross-env NODE_ENV=development node --require ts-node/register ./node_modules/typeorm/cli.js"
+// },
 
-export default dataSource;
+module.exports = dbConfig;

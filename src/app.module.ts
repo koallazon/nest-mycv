@@ -7,14 +7,16 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { ReportsModule } from './reports/reports.module';
 const cookieSession = require('cookie-session');
-// const dbConfig = require('../ormconfig.js');
-import dbConfig from '../ormconfig.js';
+import { TypeOrmConfigService } from './config/typeorm.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV}`,
+    }),
+    TypeOrmModule.forRootAsync({
+      useClass: TypeOrmConfigService,
     }),
     UsersModule,
     ReportsModule,
