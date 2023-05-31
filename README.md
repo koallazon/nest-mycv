@@ -32,6 +32,16 @@
 $ pnpm install
 ```
 
+## DB migration
+
+### 생성
+
+`pnpm typeorm migration:generate src/migrations/initial-shcema`
+
+### 실행
+
+`pnpm typeorm migration:run`
+
 ## Running the app
 
 ```bash
